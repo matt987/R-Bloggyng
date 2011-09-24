@@ -2,7 +2,7 @@
 #requerimos la librería gtk
 #depende de ruby-gnome2 - ruby-gnome-dev
 require 'gtk2'
-require 'main_presentacion'
+require 'principal'
 require 'config'
 #tiene que heredar de Gtk::Window
 class Login < Gtk::Window
@@ -11,8 +11,6 @@ class Login < Gtk::Window
         super
         @usuario     = Gtk::Entry.new
         @password  = Gtk::Entry.new
-        @usuario.text = 'learod'
-        @password.text = '123456'
         @label_usuario = Gtk::Label.new "Alias"
         @label_password = Gtk::Label.new "Contraseña"
         @loguearse  = Gtk::Button.new "Loguearse"
