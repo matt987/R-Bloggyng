@@ -1,6 +1,25 @@
 #!/usr/bin/ruby
+#       Copyright 2011 Carlos Emanuel Mathiasen <matt987@mathiasen.com>
+#                                Leandro Ariel Rodriguez <learod17@gmail.com>
+#
+#       This program is free software; you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation; either version 2 of the License.
+#
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
+#
+#       You should have received a copy of the GNU General Public License
+#       along with this program; if not, write to the Free Software
+#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#       MA 02110-1301, USA.
+
 #requerimos la librería gtk
 #depende de ruby-gnome2 - ruby-gnome-dev
+
+
 require 'gtk2'
 
 
@@ -11,7 +30,6 @@ class Principal < Gtk::Window
         Gtk.init
         #atributos de clase
         @usuario      = Usuario.find(usuario)
-        puts @usuario.nombre
         @vbox          = Gtk::VBox.new(true,1)
         @table          = Gtk::Table.new(10,1,true)
         @combo       = Gtk::ComboBox.new #crea un combobox vacío
@@ -20,15 +38,12 @@ class Principal < Gtk::Window
         @timeline_viewport = Gtk::Viewport.new(nil,nil)
         @rpost          = Gtk::TextView.new
         @buffer        = @rpost.buffer
-        @negrita       = Gtk::Button.new(Gtk::Stock::BOLD)
-        @cursiva       = Gtk::Button.new(Gtk::Stock::ITALIC)
-        @subrayado = Gtk::Button.new(Gtk::Stock::UNDERLINE)
-        @tachado     = Gtk::Button.new(Gtk::Stock::STRIKETHROUGH)
-        @limpiar       = Gtk::Button.new(Gtk::Stock::CLEAR)
         @scroll          = Gtk::ScrolledWindow.new
         @hbox          = Gtk::HBox.new(false, 5)
         @guardar     =  Gtk::Button.new(Gtk::Stock::APPLY)
         @cantidad = Gtk::Label.new("140")
+        @buscar_alias     = Gtk::Entry.new
+        @seguir = Gtk::Button.new('Seguir')
         set_windows
         #login.destroy
     end
@@ -47,11 +62,9 @@ class Principal < Gtk::Window
         self.in_hbox
         self.in_scroll
         self.in_table
-        self.combo_box
         self.text_view
         self.seniales
-        self.set_buffer
-        self.timeline_vbox
+        #self.timeline_vbox
    end
 
    def text_view
@@ -64,12 +77,8 @@ class Principal < Gtk::Window
    def in_vbox
         @vbox.pack_start(@cantidad,     false,false,0)
         @vbox.pack_start(@guardar,       false, false, 0)
-        @vbox.pack_start(@negrita,       false, false, 0)
-        @vbox.pack_start(@cursiva,       false, false, 0)
-        @vbox.pack_start(@subrayado, false, false, 0)
-        @vbox.pack_start(@tachado,     false, false, 0)
-        @vbox.pack_start(@combo,       false, false, 0)
-        @vbox.pack_start(@limpiar,       false, false, 0)
+        @vbox.pack_start(@buscar_alias,       false, false, 0)
+        @vbox.pack_start(@seguir,       false, false, 0)
    end
    #carga el scroll
    def in_scroll
@@ -103,28 +112,28 @@ class Principal < Gtk::Window
         @table.attach(@rpost,  0,  1,  0,  2, options, options, 0,    0)
         @table.attach(@scroll,  0,  1,  2,  10, options, options, 0,    0)
    end
-   def set_buffer
-        @buffer.create_tag("bold",          {"weight"        => Pango::WEIGHT_BOLD})
-        @buffer.create_tag("italic",        {"style"         => Pango::STYLE_ITALIC})
-        @buffer.create_tag("strikethrough", {"strikethrough" => true})
-        @buffer.create_tag("underline",     {"underline"     => Pango::UNDERLINE_SINGLE})
-   end
+#    def set_buffer
+#         @buffer.create_tag("bold",          {"weight"        => Pango::WEIGHT_BOLD})
+#         @buffer.create_tag("italic",        {"style"         => Pango::STYLE_ITALIC})
+#         @buffer.create_tag("strikethrough", {"strikethrough" => true})
+#         @buffer.create_tag("underline",     {"underline"     => Pango::UNDERLINE_SINGLE})
+#    end
    #agrega valores al atributo @combo
-   def combo_box
-     contenido = Array.new
-     #contenido[0] = self.text_scale("Cuarto de tamaño",      0.25)
-     contenido[0] = self.text_scale("Doble Extra Pequeño", Pango::SCALE_XX_SMALL)
-     contenido[1] = self.text_scale("Extra Pequeño",            Pango::SCALE_X_SMALL)
-     contenido[2] = self.text_scale("Pequeño",                      Pango::SCALE_SMALL)
-     contenido[3] = self.text_scale("Medio",                          Pango::SCALE_MEDIUM)
-     contenido[4] = self.text_scale("Grande",                        Pango::SCALE_LARGE)
-     contenido[5] = self.text_scale("Extra Grande",              Pango::SCALE_X_LARGE)
-     contenido[6] = self.text_scale("Doble Extra Grande",   Pango::SCALE_XX_LARGE)
-     contenido.each do |e|
-       @combo.append_text(e[:str])
-       @buffer.create_tag(e[:str], { "scale" => e[:scale] } )
-     end
-   end
+#    def combo_box
+#      contenido = Array.new
+#      #contenido[0] = self.text_scale("Cuarto de tamaño",      0.25)
+#      contenido[0] = self.text_scale("Doble Extra Pequeño", Pango::SCALE_XX_SMALL)
+#      contenido[1] = self.text_scale("Extra Pequeño",            Pango::SCALE_X_SMALL)
+#      contenido[2] = self.text_scale("Pequeño",                      Pango::SCALE_SMALL)
+#      contenido[3] = self.text_scale("Medio",                          Pango::SCALE_MEDIUM)
+#      contenido[4] = self.text_scale("Grande",                        Pango::SCALE_LARGE)
+#      contenido[5] = self.text_scale("Extra Grande",              Pango::SCALE_X_LARGE)
+#      contenido[6] = self.text_scale("Doble Extra Grande",   Pango::SCALE_XX_LARGE)
+#      contenido.each do |e|
+#        @combo.append_text(e[:str])
+#        @buffer.create_tag(e[:str], { "scale" => e[:scale] } )
+#      end
+#    end
     def seniales
         @buffer.signal_connect("mark-deleted") do|buffer,iter,text,length|
            @cantidad.set_text((140 - buffer.char_count  ).to_s)
@@ -136,13 +145,7 @@ class Principal < Gtk::Window
             end
      end
 
-        @negrita.signal_connect("clicked")      { |w| format(w) }
-        @cursiva.signal_connect("clicked")    { |w| format(w) }
-        @subrayado.signal_connect("clicked") { |w| format(w) }
-        @tachado.signal_connect("clicked")    { |w| format(w) }
         signal_connect("destroy"){ Gtk.main_quit }#cuando se le da click al boton cerrar se cierra el programa
-        @combo.signal_connect("changed")     { |w| tamanio_texto }
-        @limpiar.signal_connect("clicked")     { self.texto_normal }
         @guardar.signal_connect("clicked")  do
           unless @rpost.buffer.char_count == 0 || @rpost.buffer.char_count >= 141
               @usuario.crear_post(@rpost.buffer.text)
@@ -155,27 +158,18 @@ class Principal < Gtk::Window
             self.mensaje_dialogo "Cantidad de caracteres excedidos" if @rpost.buffer.char_count >= 139
           end
         end
-    end
-   def text_scale(str, scale)
-        {:str => str, :scale => scale}
-   end
-   def format(boton)
-     s, e = @buffer.selection_bounds
-     # Extrae el Gtk:Stock para saber el tag a aplicar
-     nombre_propiedad = boton.label.gsub(/(gtk-)([a-z]+)/, '\2')
-     @buffer.apply_tag(nombre_propiedad, s, e)
-   end
-    def texto_normal
-        s, e = @buffer.selection_bounds
-        @buffer.remove_all_tags(s, e)
+
+        @seguir.signal_connect("clicked") do
+            usuario = Usuario.find(:alias => @buscar_alias.text)
+            unless usuario.blank?
+              @usuario.aniadir_siguiendo(usuario)
+              self.mensaje_dialogo('Ahora sigues a #{usuario.alias}')
+            else
+              self.mensaje_dialogo('Alias no encontrado, están correctos los datos?')
+            end
+          end
     end
 
-    def tamanio_texto
-        return if @combo.active == -1
-        s, e = @buffer.selection_bounds
-        @buffer.apply_tag(@combo.active_text, s, e)
-        @combo.active = -1
-    end
     #crea un diálogo about.
     def about_dialogo
         about = Gtk::AboutDialog.new
@@ -199,3 +193,7 @@ class Principal < Gtk::Window
 
 end
 
+
+# Gtk.init
+# Principal.new
+# Gtk.main

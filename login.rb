@@ -1,8 +1,26 @@
 #!/usr/bin/ruby
 #requerimos la librería gtk
 #depende de ruby-gnome2 - ruby-gnome-dev
+
+#       Copyright 2011 Carlos Emanuel Mathiasen <matt987@mathiasen.com>
+#                                Leandro Ariel Rodriguez <learod17@gmail.com>
+#
+#       This program is free software; you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation; either version 2 of the License.
+#
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
+#
+#       You should have received a copy of the GNU General Public License
+#       along with this program; if not, write to the Free Software
+#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#       MA 02110-1301, USA.
+
 require 'gtk2'
-require 'main_presentacion'
+require 'principal'
 require 'config'
 #tiene que heredar de Gtk::Window
 class Login < Gtk::Window
