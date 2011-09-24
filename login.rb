@@ -41,6 +41,7 @@ class Login < Gtk::Window
      set_default_size -1, -1#tamaño de la ventana
      set_window_position Gtk::Window::POS_CENTER #posicion de la ventana
      self.in_table
+     @password.visibility = false
      add @table
      show_all #muestra todo
      signal_connect ("destroy"){ Gtk.main_quit }#cuando se le da click al boton cerrar se cierra el programa
