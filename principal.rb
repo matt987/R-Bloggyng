@@ -91,6 +91,7 @@ class Principal < Gtk::Window
    def timeline_vbox()
       @usuario.siguiendo_posts.each do |post|
           label = Gtk::Label.new(post.text)
+          puts post.text
           label.set_wrap(Gtk::TextTag::WRAP_WORD)
           label2 = Gtk::Label.new(post.created_at.localtime.strftime('%d-%m-%Y - %H:%M'))
           frame = Gtk::Frame.new(post.usuario.alias)

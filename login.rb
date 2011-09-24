@@ -29,8 +29,6 @@ class Login < Gtk::Window
         super
         @usuario     = Gtk::Entry.new
         @password  = Gtk::Entry.new
-        @usuario.text = 'learod'
-        @password.text = '123456'
         @label_usuario = Gtk::Label.new "Alias"
         @label_password = Gtk::Label.new "Contraseña"
         @loguearse  = Gtk::Button.new "Loguearse"

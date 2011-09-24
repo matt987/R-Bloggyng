@@ -5,7 +5,7 @@ class Post
 
   key :text,        String
   key :usuario_id, ObjectId
-  belongs_to :usuario#, :class_name => 'Usuario'
+  belongs_to :usuario
   timestamps!
 
   scope :siguiendos, lambda{ |array| where(:_id.in => array)}

@@ -6,7 +6,6 @@ class Usuario
   key :password,      String
   key :email,         String
   key :fecha_nac,     Date
-  #key :post_ids,      Array
   key :seguidores_ids,Array
   key :siguiendo_ids, Array
 
@@ -69,11 +68,12 @@ class Usuario
 
 
 
-  #protected
+  protected
 
   def siguiendo_posts_ids
     p=[]
     siguiendo_ids.each{|s| Usuario.find(s).post_ids.each{ |pid| p << pid}}
+    posts.each{ |pst| p << pst._id}
     p
   end
 
